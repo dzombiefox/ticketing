@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% block title %} All DATA {% endblock %}
+{% block body %}
+{% load static %}
+{% if perms.employee.view_karyawan %}
+                <section>
+                    <div class="section-body">
+                        <!-- BEGIN DATATABLE 2 -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-head style-primary">
+                                        <header>All Employee Data</header>
+                                        <div class="tools">
+                                            <a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+                                            <a class="btn btn-icon-toggle btn-close"><i class="md md-close"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="datatable2" class="table order-column hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th>EMPLOYEE NAME</th>
+                                                        <th>DEPERTEMENT</th>
+                                                        <th>POSITION</th>
+                                                          {% if perms.employee.change_karyawan or perms.employee.delete_karyawan%}
+                                                        <th width="150px">ACTIONS</th>
+                                                          {% endif %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for karyawan in karyawans %}
+                                                        <tr class="gradeX">
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ karyawan.namaKaryawan }}</td>
+                                                            <td>{{ karyawan.departemen }}</td>
+                                                            <td>{{ karyawan.jabatan }}</td>
+                                                             {% if perms.employee.change_karyawan or perms.employee.delete_karyawan%}
+                                                            <td>
+                                                             {% if perms.employee.change_karyawan %}
+                                                                  <a href="{% url 'editEmployee' karyawan.id %}" class="btn ink-reaction btn-floating-action btn-warning"><i class="md md-edit"></i> </a>
+                                                             {% endif %}
+                                                             {% if perms.employee.delete_karyawan %}
+                                                                  <a href="{% url 'deleteEmployee' karyawan.id %}" class="btn ink-reaction btn-floating-action btn-danger" onclick="return confirm('Are you sure you want to delete this?')"><i class="md md-delete"></i> </a>
+                                                             {% endif %}
+                                                           </td>
+                                                        {% endif %}
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div><!--end .table-responsive -->
+                                    </div>
+                                </div>
+                            </div><!--end .col -->
+                        </div><!--end .row -->
+                        <!-- END DATATABLE 2 -->
+
+                    </div><!--end .section-body -->
+                </section>
+     {% else %}
+      <section>
+					<div class="section-body">
+						<div class="row">
+
+							<!-- BEGIN  - FORM -->
+							<div class="col-lg-12">
+								<div class="card">
+                                <img src="{% static "img/pnf.jpg" %}" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+      </section>
+{% endif %}
+{% endblock %}

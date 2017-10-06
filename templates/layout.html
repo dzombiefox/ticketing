@@ -1,0 +1,575 @@
+{% load static %}
+{% load staticfiles %}
+{% load custom_template_tags %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{% block title %} {% endblock %} |  {{ urlify }}CJFI</title>
+
+		<!-- BEGIN META -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="your,keywords">
+		<meta name="description" content="Short explanation about this website">
+		<!-- END META -->
+
+		<!-- BEGIN STYLESHEETS -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
+		<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/materialadmin.css' %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/material-design-iconic-font.min.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/libs/DataTables/jquery.dataTables.css' %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/libs/DataTables/extensions/dataTables.colVis.css' %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/libs/DataTables/extensions/dataTables.tableTools.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/print.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/select2.min.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/chat.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/jquery.datetimepicker.css' %}" />
+    <!-- BEGIN JAVASCRIPT -->
+		<script src="{% static 'js/libs/jquery/jquery-1.11.2.min.js' %}"></script>
+		<script src="{% static 'js/libs/jquery/jquery-migrate-1.2.1.min.js' %}"></script>
+		<script src="{% static 'js/libs/bootstrap/bootstrap.min.js' %}"></script>
+
+		<script src="{% static 'js/libs/nanoscroller/jquery.nanoscroller.min.js' %}"></script>
+
+        <!-- DATATABLE -->
+		<script src="{% static 'js/libs/DataTables/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static 'js/libs/DataTables/extensions/ColVis/js/dataTables.colVis.min.js' %}"></script>
+		<script src="{% static 'js/libs/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js' %}"></script>
+
+		<script src="{% static 'js/core/App.js' %}"></script>
+		<script src="{% static 'js/core/AppNavigation.js' %}"></script>
+		<script src="{% static 'js/core/AppOffcanvas.js' %}"></script>
+		<script src="{% static 'js/core/AppCard.js' %}"></script>
+		<script src="{% static 'js/core/AppForm.js' %}"></script>
+		<script src="{% static 'js/core/AppVendor.js' %}"></script>
+		<script src="{% static 'js/core/Demo.js' %}"></script>
+        <script src="{% static 'js/core/DemoTableDynamic.js' %}"></script>
+        <script src="{% static 'js/core/select2.full.min.js' %}"></script>
+        <script src="{% static 'js/core/jquery.datetimepicker.full.js' %}"></script>
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Oswald:400,300);
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+</style>
+    <script>
+        function reloadChat(){
+           $.getJSON("http://localhost:8000/api/posts/?format=json", function(data) {
+                var id=$(".id").val();
+                var length=data.length
+                if(id==length){}
+                else{
+                  $(".chat").empty();
+                    for (i in data){
+                                     var future_field = data[i];
+                                     $(".chat").append('<div class="chat-box-single-line"><abbr class="timestamp">'
+                                         +future_field.created_at+'</abbr></div><div class="direct-chat-msg doted-border">' +
+                                         '<div class="direct-chat-info clearfix"> <span class="direct-chat-name pull-left">'
+                                         +future_field.karyawan.namaKaryawan+'</span></div>' +
+                                         '<img alt="message user image" src="'+future_field.karyawan.prof_pic+'" class="direct-chat-img">' +
+                                         '<div class="direct-chat-text">'+future_field.chat+'</div>');
+                                      }
+                                      $(".id").val(data.length)
+
+
+
+                }
+
+
+                            });
+        }
+$(document).ready(function () {
+     setInterval(reloadChat, 3000);
+     var id=$(".id").val();
+     $.getJSON("http://localhost:8000/api/posts/?format=json", function(data) {
+      $(".id").val(data.length)
+
+     });
+       $(".select").select2()
+       //setInterval(reloadChat, 3000);
+       $("#addClass").click(function () {
+          $('#qnimate').addClass('popup-box-on');
+            });
+
+            $("#removeClass").click(function () {
+          $('#qnimate').removeClass('popup-box-on');
+            });
+
+             var frm = $('#formChat');
+              frm.submit(function(e) {
+                  $.ajax({
+                      type: frm.attr('method'),
+                      url: frm.attr('action'),
+                      data: frm.serialize(),
+                      success:function(dat){
+                              $(".chat").empty();
+                              $("#chat").val("");
+
+                                                    $.getJSON("http://localhost:8000/api/posts/?format=json", function(data) {
+
+                                                        for (i in data) {
+                                                            var future_field = data[i];
+                                                            $(".chat").append('<div class="chat-box-single-line"><abbr class="timestamp">'
+                                                                + future_field.created_at + '</abbr></div><div class="direct-chat-msg doted-border">' +
+                                                                '<div class="direct-chat-info clearfix"> <span class="direct-chat-name pull-left">'
+                                                                + future_field.karyawan.namaKaryawan + '</span></div>' +
+                                                                '<img alt="message user image" src="' + future_field.karyawan.prof_pic + '" class="direct-chat-img">' +
+                                                                '<div class="direct-chat-text">' + future_field.chat + '</div>');
+                                                        }
+
+                                                    });
+
+                      }
+                  })
+                 e.preventDefault();
+
+              });
+        });
+
+
+{#        $('ul.tabs').tabs();#}
+    </script>
+    <style>
+{#        form{#}
+{#  padding: 20px 20px;#}
+{#  border: 1px solid red;#}
+{#}#}
+
+.input-group{
+  position: relative;
+  border: 1px solid blue;
+  margin: 5px 0;
+  padding: 20px 05px;
+}
+
+.input-group select{
+  width: 100%;
+}
+
+.input-group>.sel-wrap{
+  margin: 5px 0;
+  left: 25px;
+  right: 25px;
+  top: 25px;
+}
+
+.sel-wrap>select2{
+  width: 100%;
+}
+
+.input-group>label{
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  z-index: 1;
+  transition: 0.2s ease-out;
+  pointer-events: none;
+  color: grey;
+}
+
+.input-group>label.filled{
+  left: 05px;
+  transform: translateY(-140%);
+  display: inherit;
+}
+
+.input-group>label.active{
+  color: blue;
+}
+
+.select2 .selection .select2-selection{
+  border: none;
+  border-bottom: 1px solid grey;
+  border-radius: 0;
+
+}
+
+.select2-container *:focus{
+  outline: none;
+}
+
+.select2-dropdown--below{
+  margin-top: 10px;
+}
+
+span.select2-container--open .select2-results__options .select2-results__option{
+  padding: 10px 16px 16px 10px;
+  color: black;
+}
+
+span.select2-container--open .select2-results__options .select2-results__option[aria-selected="true"]{
+  background-color: Silver;
+}
+
+span.select2-container--open .select2-results__options .select2-results__option--highlighted{
+  background-color: Gainsboro;
+}
+
+span.select2-container--open .select2-dropdown{
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.19), 0 8px 17px rgba(0, 0, 0, 0.2);
+  border: 1px solid #eee;
+}
+
+span.select2-container--open .select2-dropdown .select2-search--dropdown{
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.26);
+  width: 95%;
+  margin: 10px auto;
+  border-radius: 1px;
+}
+
+span.select2-container--open .select2-dropdown .select2-search--dropdown input{
+  border-radius: 1px;
+}
+
+/* bottom bar */
+.bar{
+  width: 100%;
+  background-color: violet;
+  position: relative;
+  display: block;
+}
+
+.bar:before, .bar:after   {
+  content:'';
+  width:0;
+  height:2px;
+  bottom:1px;
+  position:absolute;
+  background:#5264AE;
+  transition:0.2s ease all;
+}
+
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%;
+}
+
+/* active state */
+.select2-container--focus ~ .bar:before, .select2-container--focus ~ .bar:after,
+.select2-container--open ~ .bar:before, .select2-container--open ~ .bar:after{
+  width:50%;
+}
+
+
+    </style>
+		<!-- END JAVASCRIPT -->
+
+		<!-- END STYLESHEETS -->
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="../../assets/js/libs/utils/html5shiv.js?1403934957"></script>
+		<script type="text/javascript" src="../../assets/js/libs/utils/respond.min.js?1403934956"></script>
+		<![endif]-->
+	</head>
+	<body class="menubar-pin menubar-hoverable header-fixed "> <!--max sidemenu: menubar-pin -->
+
+		<!-- BEGIN HEADER-->
+		<header id="header" >
+			<div class="headerbar">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="headerbar-left">
+					<ul class="header-nav header-nav-options">
+						<li class="header-nav-brand" >
+							<div class="brand-holder">
+								<a href="{% url 'home' %}">
+									<span class="text-lg text-light text-danger">TICKETING</span><span class="text-lg text-bold text-primary"> SYSTEMS</span>
+								</a>
+							</div>
+						</li>
+						<li>
+							<a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+								<i class="fa fa-bars"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="headerbar-right">
+					<ul class="header-nav header-nav-profile">
+						<li class="dropdown">
+							<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+								<span class="profile-info">
+
+									<h4 class="text-lg text-bold text-primary">Welcome &nbsp;{{user.useremployee.karyawan }}({{ user.useremployee.karyawan.departemen }})</h4>
+								</span>
+							</a>
+							<ul class="dropdown-menu animation-dock">
+								<li class="dropdown-header">
+                                    {% if user.useremployee.karyawan.prof_pic.url != NULL  %}
+                                    <img src="{{user.useremployee.karyawan.prof_pic.url}}" class="img-fluid" />My profile</li>
+                                          {% else %}
+                                        nill
+                                    {% endif %}
+								<li><a href="{% url 'change_password' %}">Change Password</a></li>
+								<li class="divider"></li>
+								<li><a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
+							</ul><!--end .dropdown-menu -->
+						</li><!--end .dropdown -->
+					</ul><!--end .header-nav-profile -->
+				</div><!--end #header-navbar-collapse -->
+			</div>
+		</header>
+		<!-- END HEADER-->
+
+		<!-- BEGIN BASE-->
+		<div id="base">
+
+			<!-- BEGIN OFFCANVAS LEFT -->
+			<div class="offcanvas">
+			</div><!--end .offcanvas-->
+			<!-- END OFFCANVAS LEFT -->
+
+			<!-- BEGIN CONTENT-->
+			<div id="content">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div {% if message.tags %} class="alert {{ message.tags }} text-center"{% endif %}>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+                {% block body %}
+
+                {% endblock %}
+
+			</div><!--end #content-->
+			<!-- END CONTENT -->
+
+			<!-- BEGIN MENUBAR-->
+			<div id="menubar" class="menubar-inverse ">
+				<div class="menubar-fixed-panel">
+					<div>
+						<a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+							<i class="fa fa-bars"></i>
+						</a>
+					</div>
+					<div class="expanded">
+						<a href="{% url 'home' %}">
+							<span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+						</a>
+					</div>
+				</div>
+				<div class="menubar-scroll-panel">
+
+					<!-- BEGIN MAIN MENU -->
+					<ul id="main-menu" class="gui-controls">
+
+						<!-- BEGIN DASHBOARD -->
+						<li>
+							<a href="{% url 'home' %}" class="active">
+								<div class="gui-icon"><i class="md md-home"></i></div>
+								<span class="title">Dashboard</span>
+							</a>
+						</li><!--end /menu-li -->
+						<!-- END DASHBOARD -->
+
+						<!-- BEGIN ORDER -->
+						<li class="gui-folder">
+							<a>
+								<div class="gui-icon"><i class="fa fa-plus-circle"></i></div>
+								<span class="title">Add Data</span>
+							</a>
+							<!--start submenu -->
+							<ul>
+                                {% if perms.maintenance.add_requestperbaikan %}
+                                <li><a href="{% url 'addRequest' %}" ><span class="title">Request Maintenance</span></a></li>
+                                {% endif %}
+                                {% if perms.maintenance.add_satuan %}
+								<li><a href="{% url 'addUnit' %}" ><span class="title">Add Units</span></a></li>
+                                {% endif %}
+                                {% if perms.barang.add_barang %}
+								<li><a href="{% url 'addItem'%}" ><span class="title">Add Items</span></a></li>
+                                {% endif %}
+                                {% if perms.maintenance.add_barangmasuk %}
+                                <li><a href="{% url 'addIncoming'%}" ><span class="title">Add Incoming Items</span></a></li>
+                                {% endif %}
+                                {% if perms.maintenance.add_masterperbaikan %}
+                                <li><a href="{% url 'addRepair'%}" ><span class="title">Add Master Maintenance</span></a></li>
+                                {% endif %}
+                                {% if perms.loan.add_asetbarang %}
+                                <li><a href="{% url 'addAset'%}" ><span class="title">Add Asset</span></a></li>
+                                {% endif %}
+                                {% if perms.maintenance.add_karyawan %}
+                                <li><a href="{% url 'addEmployee'%}" ><span class="title">Add Employee</span></a></li>
+                                {% endif %}
+                                {% if perms.loan.add_pinjambarang %}
+                                <li><a href="{% url 'addBorrow'%}" ><span class="title">Borrow Asset</span></a></li>
+                                {% endif %}
+                                {% if perms.loan.add_pengembalianbarang %}
+                                <li><a href="{% url 'addReturn'%}" ><span class="title">Return Asset {{ urlify }}</span></a></li>
+                                {% endif %}
+							</ul><!--end /submenu -->
+						</li><!--end /menu-li -->
+                                                						<li class="gui-folder">
+							<a>
+								<div class="gui-icon"><i class="fa fa-folder-open"></i></div>
+								<span class="title">All Data</span>
+							</a>
+							<!--start submenu -->
+							<ul>
+                                {% if perms.barang.view_satuan %}
+								<li><a href="{% url 'indexUnit' %}" ><span class="title">Data Units</span></a></li>
+                                {% endif %}
+                                {% if perms.barang.view_barang %}
+								<li><a href="{% url 'indexItem'%}" ><span class="title">Data Items</span></a></li>
+                                {% endif %}
+                                {% if perms.barang.view_barangmasuk %}
+                                <li><a href="{% url 'indexIncoming'%}" ><span class="title">Data Incoming Items</span></a></li>
+                                {% endif  %}
+                                {% if perms.maintenance.view_masterperbaikan %}
+                                <li><a href="{% url 'indexRepair'%}" ><span class="title">Data Master Maintenace</span></a></li>
+                                {% endif %}
+                                <li><a href="{% url 'indexRequest'%}" ><span class="title">Data Request Maintenace</span></a></li>
+                                {% if perms.loan.view_asetbarang %}
+                                <li><a href="{% url 'indexAset'%}" ><span class="title">Data Asset</span></a></li>
+                                {% endif %}
+                                {% if perms.employee.view_karyawan %}
+                                <li><a href="{% url 'indexEmployee'%}" ><span class="title">Data Employee</span></a></li>
+                                {% endif %}
+                                {% if perms.loan.view_pinjambarang %}
+                                <li><a href="{% url 'indexBorrow'%}" ><span class="title">Borrow Asset</span></a></li>
+                                {% endif %}
+                                {% if perms.loan.view_pengembalianbarang %}
+                                <li><a href="{% url 'indexReturn'%}" ><span class="title">Return Asset</span></a></li>
+                                {% endif %}
+
+							</ul><!--end /submenu -->
+						</li><!--end /menu-li -->
+						<!-- END ORDER -->
+
+{#						<!-- BEGIN PROFILE -->#}
+{#						<li class="gui-folder">#}
+{#							<a>#}
+{#								<div class="gui-icon"><i class="fa fa-user"></i></div>#}
+{#								<span class="title">Profile</span>#}
+{#							</a>#}
+{#							<!--start submenu -->#}
+{#							<ul>#}
+{#								<li><a href="{% url 'change_password' %}" ><span class="title">Change Password</span></a></li>#}
+{#								<li><a href="{% url 'logout' %}" ><span class="title">Logout</span></a></li>#}
+{#							</ul><!--end /submenu -->#}
+{#						</li><!--end /menu-li -->#}
+{#						<!-- END PROFILE -->#}
+
+                        		<!-- BEGIN chat -->
+						<li >
+							<a href="#" id="addClass">
+								<div class="gui-icon"><i class="fa fa-envelope"></i></div>
+                                <span class="title">Open Chat</span>
+							</a>
+							<!--start submenu -->
+{#							<ul>#}
+{#                                {% get_rate as datas %}#}
+{#                                  {% for data in  datas%}#}
+{#								<li><a href="#" ><span class="title">{{ data.namaKaryawan }}</span></a></li>#}
+{#                                  {% endfor %}#}
+{#							</ul><!--end /submenu -->#}
+						</li><!--end /menu-li -->
+						<!-- END CHAT -->
+
+
+
+					</ul><!--end .main-menu -->
+					<!-- END MAIN MENU -->
+<div class="container text-center">
+	<div class="row">
+		<h2>Open in chat (popup-box chat-popup)</h2>
+        <h4>Click Here</h4>
+        <div class="round hollow text-center">
+        <a href="#" id="addClass"><span class="glyphicon glyphicon-comment"></span> Open in chat </a>
+        </div>
+
+        <hr>
+
+        MORE :
+        <a target="_blank" href="http://bootsnipp.com/snippets/33ejn">Whatsapp Chat Box POPUP</a>,
+         <a target="_blank" href="http://bootsnipp.com/snippets/z4P39"> Creative User Profile  </a>
+
+	</div>
+</div>
+
+
+<div class="popup-box chat-popup" id="qnimate">
+    		  <div class="popup-head">
+				<div class="popup-head-left pull-left"><img src="{{user.useremployee.karyawan.prof_pic.url}}" class="img-fluid" /> {{user.useremployee.karyawan }}</div>
+					  <div class="popup-head-right pull-right">
+{#						<div class="btn-group">#}
+{#    								  <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">#}
+{#									   <i class="glyphicon glyphicon-cog"></i> </button>#}
+{#									  <ul role="menu" class="dropdown-menu pull-right">#}
+{#										<li><a href="#">Media</a></li>#}
+{#										<li><a href="#">Block</a></li>#}
+{#										<li><a href="#">Clear Chat</a></li>#}
+{#										<li><a href="#">Email Chat</a></li>#}
+{#									  </ul>#}
+{#						</div>#}
+
+						<button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-off"></i></button>
+                      </div>
+			  </div>
+			<div class="popup-messages">
+
+
+
+
+			<div class="direct-chat-messages chat">
+            <input type="hidden" class="id" >
+                     {% get_chat as datas %}
+                     {% for data in  datas%}
+					<div class="chat-box-single-line">
+                        <abbr class="timestamp">{{ data.created_at }}</abbr>
+					</div>
+					<!-- Message. Default to the left -->
+                    <div class="direct-chat-msg doted-border">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left">{{ data.karyawan }}</span>
+                      </div>
+                      <!-- /.direct-chat-info -->
+                      <img alt="message user image" src="{{data.karyawan.prof_pic.url}}" class="direct-chat-img"><!-- /.direct-chat-img -->
+                      <div class="direct-chat-text">
+                        {{ data.chat }}
+                      </div>
+						<div class="direct-chat-info clearfix">
+						<span class="direct-chat-img-reply-small pull-left">
+						</span>
+						<span class="direct-chat-reply-name">{{ data.karyawan.departemen }}</span>
+						</div>
+                    </div>
+                        {% endfor %}
+                    </div>
+                    </div>
+
+
+<form method="post" action="/chat/chat" name="formChat" id="formChat">
+ {% csrf_token %}
+			<div class="popup-messages-footer">
+			<input id="chat" placeholder="Type a message..." rows="10" cols="40" name="chat"  class="form-control"></input>
+            <input type="hidden" name="karyawan" value="{{ user.useremployee.karyawan.id }}">
+            <input type="hidden" name="status" value="0"><div class="btn-footer">
+			<button class="bg_none pull-right"><i class="glyphicon glyphicon-envelope"></i> </button>
+			</div>
+			</div>
+</form>
+	  </div>
+					<div class="menubar-foot-panel">
+						<small class="no-linebreak hidden-folded">
+							<span class="opacity-75">Copyright &copy; {% now "Y" %}</span> <strong>PT CJFI</strong>
+						</small>
+					</div>
+				</div><!--end .menubar-scroll-panel-->
+			</div><!--end #menubar-->
+			<!-- END MENUBAR -->
+
+		</div><!--end #base-->
+		<!-- END BASE -->
+
+	</body>
+
+</html>

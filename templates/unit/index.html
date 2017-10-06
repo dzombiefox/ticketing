@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block title %} All DATA {% endblock %}
+
+{% block body %}
+{% load static %}
+{% if perms.barang.view_satuan %}
+                <section>
+                    <div class="section-body">
+                        <!-- BEGIN DATATABLE 2 -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-head style-primary">
+                                        <header>All Units Data</header>
+                                        <div class="tools">
+                                            <a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+                                            <a class="btn btn-icon-toggle btn-close"><i class="md md-close"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="datatable2" class="table order-column hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th>UNIT NAME</th>
+                                                        {% if perms.barang.change_satuan or perms.barang.delete_satuan%}
+                                                        <th width="150px">ACTIONS</th>
+                                                        {% endif %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for satuan in satuans %}
+                                                        <tr class="gradeX">
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ satuan.namaSatuan }}</td>
+                                                            {% if perms.barang.change_satuan or perms.barang.delete_satuan%}
+                                                            <td>  {% if perms.barang.change_satuan %}
+                                                                  <a href="{% url 'editUnit' satuan.id %}" class="btn ink-reaction btn-floating-action btn-warning"><i class="md md-edit"></i> </a>
+                                                                  {% endif %}
+                                                                  {% if perms.barang.delete_satuan %}
+                                                                  <a href="{% url 'deleteUnit' satuan.id %}" class="btn ink-reaction btn-floating-action btn-danger" onclick="return confirm('Are you sure you want to delete this?')"><i class="md md-delete"></i> </a>
+                                                                  {% endif %}
+                                                            {% endif %}
+                                                           </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div><!--end .table-responsive -->
+                                    </div>
+                                </div>
+                            </div><!--end .col -->
+                        </div><!--end .row -->
+                        <!-- END DATATABLE 2 -->
+
+                    </div><!--end .section-body -->
+                </section>
+       {% else %}
+      <section>
+					<div class="section-body">
+						<div class="row">
+
+							<!-- BEGIN  - FORM -->
+							<div class="col-lg-12">
+								<div class="card">
+                                <img src="{% static "img/pnf.jpg" %}" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+      </section>
+{% endif %}
+
+{% endblock %}

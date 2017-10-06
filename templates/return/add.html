@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+{% block title %} Add Return Asset {% endblock %}
+{% block body %}
+{% load static %}
+{% if perms.maintenance.add_pengembalianbarang %}
+            <section>
+					<div class="section-body">
+                                            <div class="row">
+                                                <div class="section-body">
+						<div class="row">
+
+							<!-- BEGIN  - FORM -->
+							<div class="col-lg-12">
+								<div class="card">
+									<div class="card-head style-primary">
+										<header>Add Return Asset</header>
+										<div class="tools">
+											<a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+											<a class="btn btn-icon-toggle btn-close"><i class="md md-close"></i></a>
+										</div>
+									</div>
+                                                                    <div class="card-body">
+                                                                        
+                                                                        
+										<form class="form" role="form" action="" method="post"> {% csrf_token %}
+                                                                                    			<div class="row">
+												<div class="col-sm-12">
+													
+													<div class="form-group floating-label">
+														  <div class="form-group floating-label">
+														<select name="pinjam" required class="form-control select" >
+                                                        <option value="" selected>---------</option>
+                                                            {% for combo in combo %}
+                                                            <option value="{{ combo.id}}">{{ combo.barang}}</option>
+                                                            {% endfor %}
+                                                        </select>
+
+
+													</div>
+
+                                                                                                              
+													</div>
+                                                    <div class="form-group floating-label">
+														{{ form.karyawan | add_class:'form-control select' }}
+
+
+													</div>
+                                                    <div class="form-group floating-label">
+														{{ form.keterangan | add_class:'form-control' }}
+
+
+													</div>
+													
+												</div>
+                                                                                                <div class="col-md-12">
+													
+													<div class="card-actionbar-row">
+														<input type="submit" class="btn btn-flat btn-primary ink-reaction" value="SUBMIT">
+                                                                                                                <a href="{% url 'indexUnit' %}" class="btn btn-flat btn-primary ink-reaction">View Data</a>
+													</div>
+												</div>
+                                                                                                        </div>
+                                        </form>
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                    </div>   
+                                                                </div>
+                                                        </div>
+                                                        
+                                                
+                                            </div>
+
+                                        </div>
+                </section>
+     {% else %}
+      <section>
+					<div class="section-body">
+						<div class="row">
+
+							<!-- BEGIN  - FORM -->
+							<div class="col-lg-12">
+								<div class="card">
+                                <img src="{% static "img/pnf.jpg" %}" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+      </section>
+    {% endif %}
+{% endblock %}

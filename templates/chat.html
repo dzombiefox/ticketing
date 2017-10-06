@@ -1,0 +1,12 @@
+<li class="gui-folder">
+	<a>
+	<div class="gui-icon"><i class="fa fa-envelope"></i></div>
+	<span class="title">Chat</span>
+	</a>
+	<!--start submenu -->
+	<ul>
+     {% for user in users %}
+    	<li><a href="{% url 'change_password' %}" ><span class="title">{{ user.karyawan }}</span></a></li>
+	 {% endfor %}
+    </ul><!--end /submenu -->
+</li><!--end /menu-li -->
